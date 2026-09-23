@@ -9,11 +9,11 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # 1️⃣ Checkout code
+      # 1 Checkout code
       - name: Checkout latest code
         uses: actions/checkout@v4
 
-      # 2️⃣ Build Docker image avec les variables d'environnement depuis les secrets
+      # 2 Build Docker image avec les variables d'environnement depuis les secrets
       - name: Build Docker image
         run: |
           sudo docker build \
@@ -22,13 +22,13 @@ jobs:
             --build-arg APEX_API_KEY=${{ secrets.APEX_API_KEY }} \
             -t bot_apex:latest .
 
-      # 3️⃣ Stop et supprimer l'ancien container s'il existe
+      # 3 Stop et supprimer l'ancien container s'il existe
       - name: Stop previous container
         run: |
           sudo docker stop bot_apex || true
           sudo docker rm bot_apex || true
 
-      # 4️⃣ Run le nouveau container
+      # 4 Run le nouveau container
       - name: Run new container
         run: |
           sudo docker run -d --name bot_apex \
@@ -37,6 +37,6 @@ jobs:
             -e APEX_API_KEY=${{ secrets.APEX_API_KEY }} \
             bot_apex:latest
 
-      # 5️⃣ Fin
+      # 5 Fin
       - name: Finished
         run: echo "Deployment and bot execution completed."
